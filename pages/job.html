@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Outfit"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='stylesheets/main.css') }}"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  </head>
+  <body>
+
+  {% include 'nav-bar-student.html' %}
+
+  <br />
+  <br />
+
+  <div class="edit-container card profile" style="display:block">
+    <div class="card-topper"></div>
+    <br />
+    <br />
+    <h1 class="grid-left">{{job['title']}}</h1>
+    <h5 class="grid-left">Professor:  <a href="{{url_for('profile_view_professor', id=job['professor_id'])}}">{{job['professor']}}</a>
+    <br>
+    <h5 class="grid-left">Class year: {{job['class_year']}} 
+    <br>
+    Department: {% for dept in job['dept'] %} {{dept}} {% if not loop.last %}&bull; {% endif %}{% endfor %}</h5>
+    <br>
+    <p>{{job['description']}}</p>
+    <br>
+    <br>
+    <h3>Application Form</h3>
+    <br />
+    <form
+      id="application-form"
+      action="/job-view/{{job['job_id']}}/apply"
+      method="POST"
+      class="edit-container even-grid"
+      style="position: static"
+      onsubmit="return validateForm()"
+    >
+    {% for question in job['questions'] %}
+      <span class="outfit grid-left">{{question}}</span>
+      <input class="custom-question" style="grid-column:span 2;" type="text" name="response">
+    {% endfor %}
+
+      <input class="button-dark stay-center" type="submit" name="submit" />
+    </form>
+</form>
+</div>
+<script>
+  function validateForm() {
+    var fullName = document.forms["application-form"]["full_name"].value;
+    var email = document.forms["application-form"]["email"].value;
+
+    if (fullName == "" || email == "") {
+      alert("Please fill in all required fields.");
+      return false;
+    }
+  }
+</script>
+  
+</html>

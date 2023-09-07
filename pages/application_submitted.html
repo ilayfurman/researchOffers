@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Application Submitted</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Outfit"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='stylesheets/main.css') }}"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  </head>
+  <body>
+    {% include 'nav-bar-student.html' %}
+    <div
+      class="edit-container card profile"
+      style="padding-bottom: 0; margin-top: 3rem"
+    >
+      <div
+        class="card-topper"
+        style="
+          height: 5rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        "
+      >
+        <h2 style="text-align: center">
+          Your application for "{{job['title']}}" has been submitted!
+        </h2>
+      </div>
+      <table class="data-table">
+        <tbody>
+          <tr>
+            <td>Full Name</td>
+            <td>{{user.name}}</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>{{user.email}}</td>
+          </tr>
+          {% for ques_resp in application %}
+          <tr>
+            <td>{{ques_resp[0]}}</td>
+            <td>{{ques_resp[1]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html class="bg-primary-600">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Outfit"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='stylesheets/main.css') }}"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  </head>
+
+  <body>
+    <form class="login-card" method="post" action="/login">
+      <div class="card-topper" style="height: 80px; padding-top: 2rem">
+        <h1 style="margin-top: 0">ResearchOffers</h1>
+      </div>
+      <div class="login-container">
+        <div class="search-input">
+          <label>Username</label>
+          <input name="username" type="text" />
+        </div>
+        <div class="search-input">
+          <label>Password</label>
+          <input name="password" type="password" />
+          <span id="password-error" style="color: red"
+            >{{ password_error }}</span
+          >
+        </div>
+        <select name="position" style="width: 7rem">
+          <option>Student</option>
+          <option>Professor</option>
+        </select>
+        <input
+          type="submit"
+          value="Login"
+          class="button-dark bg-primary-600"
+          style="width: 7rem"
+        />
+      </div>
+    </form>
+  </body>
+</html>

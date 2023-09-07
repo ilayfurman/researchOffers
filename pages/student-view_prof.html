@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Outfit"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='stylesheets/main.css') }}"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  </head>
+
+  <body>
+    <!-- {% include 'nav-bar-student.html' %} -->
+    
+    <br />
+    <br />
+
+    <div class="edit-container card profile" style="display: block">
+      <div class="card-topper"></div>
+      <br />
+      <br />
+      <h1>Applicant profile</h1>
+      <h3>
+        <u><a href="mailto:{{profile['email']}}">{{profile['email']}}</a></u>
+      </h3>
+      <h3>{{profile['name']}}</h3>
+      <h5>{{profile['year']}} &bull; {{profile['dept']}}</h5>
+      <p>{{profile['bio']}}</p>
+      <br /><br />
+      <h3>Skills</h3>
+      <br />
+      <div class="skills-container">
+        {% for skill in profile['skills'] %}
+        <div>{{skill}}</div>
+        {% endfor %}
+    <br />
+  </body>
+</html>

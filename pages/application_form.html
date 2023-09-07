@@ -1,0 +1,30 @@
+<h3>Application Form</h3>
+  <br />
+  <form
+    id="application-form"
+    action="/job-view/{{job['job_id']}}/apply"
+    method="POST"
+    class="edit-container even-grid"
+    style="position: static"
+    onsubmit="return validateForm()"
+  >
+  {% for question in questions %}
+    <span>{{question}}</span>
+    <input classname='custom-question' type="text" name="response" class="grid-column: span 2">
+  {% endfor %}
+
+    <input class="button-dark stay-center" type="submit" name="submit" />
+  </form>
+</form>
+
+<script>
+  function validateForm() {
+    var fullName = document.forms["application-form"]["full_name"].value;
+    var email = document.forms["application-form"]["email"].value;
+
+    if (fullName == "" || email == "") {
+      alert("Please fill in all required fields.");
+      return false;
+    }
+  }
+</script>

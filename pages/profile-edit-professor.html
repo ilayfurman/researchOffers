@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Outfit"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='stylesheets/main.css') }}"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  </head>
+  <body>
+
+  {% include 'nav-bar-professor.html' %}
+
+  <br />
+  <br />
+
+  <div class="edit-container card profile"> 
+    <div class="banner outfit">Edit Profile</div>
+    <br />
+    <br />
+    {% if profile['name'] == "" %}
+    <h5>You must complete your profile before using TigerAdvisors!</h5>
+    <br>
+    {% endif %}
+  <br />
+  <form
+    id="application-form"
+    action="/profile-edit"
+    method="POST"
+    enctype="multipart/form-data" 
+    class="edit-container search-grid"
+    style="position: static"
+    onsubmit="return validateForm()"
+  >
+  {% if profile['name'] != '' %}
+  <div style="display:flex;flex-direction:column;align-items:center;grid-column:span 2;">
+    {% if photo is not none %}
+      <div class="delete-image">
+        <img
+          class="profile-edit-image"
+          src="data:image/jpeg;base64, {{ photo.decode() }}"
+          alt="my_img"
+          style="top: 80px"
+        />
+
+        <svg id="edit" class="pencil" width="110px" height="110px" fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 528.899 528.899" xml:space="preserve">
+          <circle cx="260px" cy="260px" r="260px" fill="#FFF7" />
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier" transform="scale(.5) translate(260,260)"> <g> <path d="M328.883,89.125l107.59,107.589l-272.34,272.34L56.604,361.465L328.883,89.125z M518.113,63.177l-47.981-47.981 c-18.543-18.543-48.653-18.543-67.259,0l-45.961,45.961l107.59,107.59l53.611-53.611 C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69c-1.958,8.812,5.998,16.708,14.811,14.565l119.891-29.069 L27.473,390.597L0.3,512.69z"></path> </g> </g>
+        </svg>
+
+        <svg class="delete-button" width="30px" height="30px">
+          <circle cx='15' cy='15' r='12' fill="#A00"></circle>
+          <path d="M 10 10 L 20 20 M 10 20 L 20 10" stroke="white" stroke-width="3px" stroke-linecap="round"></path>
+        </svg>
+        <dialog class="delete-dialog">
+          <p>Are you sure you want to delete your profile photo?</p>
+          <div>
+            <button class="button-dark cancel-button" type="button" id="cancel-btn">Cancel</button>
+            <button class="button-cancel" type="submit" id="delete-photo-btn">Delete</button>
+          </div>
+        </dialog>
+      </div>
+    {% else %}
+      <button id="edit" type="button">Add</button>
+    {% endif %}
+    <p class="outfit">Profile Photo</p>
+    <p style="color:#555;line-height:10px;">(png, jpg)</p>
+    </div>
+    {% endif %}
+    <input type="file" id="file" name="profile_photo" accept="image/*" style="display:none;">
+    <!-- <label for="file" id="upload-btn">Update photo</label> -->
+
+
+  
+    <div class="search-input grid-left">
+      <label>Full Name*</label>
+      <input type="text" name="full_name" placeholder="TigerAdvisors" value="{{profile['name']}}" />
+    </div>
+    <div class="search-input grid-right area">
+      <label>Bio (optional)</label>
+      <textarea name="bio">{{profile['bio']}}</textarea>
+    </div>
+    <div class="search-input grid-left">
+      <label>Email*</label>
+      <input type="text" name="email" placeholder="abc123@princeton.edu" value="{{profile['email']}}" />
+    </div>
+    <div class="dropdown" style="grid-column: 1 / span 1">
+      <label>Department</label>
+      <select name="dept">
+        {% for dept in department %}
+        <option {% if dept.title == profile['department'].title %} selected="selected" {% endif %}>{{ dept.title }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    
+    <a href="/profile-view" class="two-to-one self-end">
+      <button type="button" class="button-cancel">Cancel</button>
+    </a>
+    
+    <input type="submit" value="Save" class="button-dark three-to-two" />
+  </form>
+  </div>
+
+<script>
+  function validateForm() {
+    var fullName = document.forms["application-form"]["full_name"].value;
+    var email = document.forms["application-form"]["email"].value;
+
+    if (fullName == "" || email == "") {
+      alert("Please fill in all required fields.");
+      return false;
+    }
+  }
+
+    //---------------------------------------------------------------------
+  // handels deleting photo
+  try {
+    const photoform = document.querySelector('.delete-photo');
+    const photodeleteButton = photoform.querySelector('.delete-button');
+    const photocancelButton = photoform.querySelector('.cancel-button');
+    const photodialog = photoform.querySelector('.delete-dialog');
+
+    photodeleteButton.addEventListener('click', () => {
+      console.log("SHOW")
+      photodialog.show()
+    });
+    photocancelButton.addEventListener('click', () => {
+      photodialog.close();
+    });
+    document.getElementById('delete-photo-btn').addEventListener('click' , () => {
+      console.log('works')
+      window.location.replace("{{ url_for('delete_professor_photo', professor_id=profile['professor_id'])}}")
+    })
+  } catch (ex) {
+    console.error(ex);
+  }
+  
+  //---------------------------------------------------------------------
+  // makes clicking the image open the file input
+  const image = document.getElementById('edit');
+  const input = document.getElementById('file');
+  image.addEventListener('click', () => input.click());
+</script>
+  </div>
+  
+  
+</html>
+
+
+

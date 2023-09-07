@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Outfit"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='stylesheets/main.css') }}"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  </head>
+  <body>
+    {% include 'nav-bar-student.html' %}
+    <div class="banner outfit">TigerAdvisors</div>
+    <br />
+    <br />
+    <form class="search-grid edit-container">
+      <div class="search-input grid-left">
+        <label>Professor</label>
+        <input name="prof" id="professor" type="text" value="{{professor}}" />
+      </div>
+      <div class="search-input grid-left">
+        <label>Keyword</label>
+        <input name="keyword" id="keyword" type="text" value="{{keyword}}" />
+      </div>
+      <div class="dropdown three-to-one department">
+        <label>Department</label>
+        <select name="dept" id="department" value="{{dept}}">
+          <option {% if dept == 'All' %}selected{% endif %}>All</option>
+          {% for department in departments %}
+          <option {% if dept == department %}selected{% endif %}>{{department}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="dropdown three-to-two">
+        <label>Class</label>
+        <select name="classYear" id="classYear" value="{{classYear}}">
+          <option {% if classYear == 'All' %}selected{% endif %}>All</option>
+          <option {% if classYear == 'Freshman' %}selected{% endif %}>Freshman</option>
+          <option {% if classYear == 'Sophomore' %}selected{% endif %}>Sophomore</option>
+          <option {% if classYear == 'Junior' %}selected{% endif %}>Junior</option>
+          <option {% if classYear == 'Senior' %}selected{% endif %}>Senior</option>
+        </select>
+      </div>
+      <div class="search-grid results-grid" style="width:100%;" id="results"></div>
+    </form>
+    <script src= "{{ url_for('static', filename='scripts/studentsearch.js') }}"></script>
+    
+  </body>
+</html>

@@ -1,0 +1,21 @@
+<div class="header">
+  <button id="logo" class="logo-button top-left">TigerAdvisors</button>
+  <button id="home" class="button-clear">Home</button>
+  <button id="profile-btn" class="button-clear">Profile</button>
+  <button id="logout" class="button-clear">Log Out</button>
+</div>
+
+<script>
+  document.getElementById("logo").addEventListener("click", function () {
+    window.location.href = "/";
+  });
+  document.getElementById("home").addEventListener("click", function () {
+    window.location.href = "/";
+  });
+  document.getElementById("profile-btn").addEventListener("click", function () {
+    window.location.href = "/profile-view";
+  });
+  document.getElementById("logout").addEventListener("click", function () {
+    window.location.href = "/logout";
+  });
+</script>

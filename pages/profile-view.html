@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Outfit"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='stylesheets/main.css') }}"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  </head>
+
+  <body>
+    {% if position == 'undergraduate' %}
+      {% include 'nav-bar-student.html' %}
+    {% else %}
+      {% include 'nav-bar-professor.html' %}
+    {% endif %}
+    <br />
+    <div class="edit-container card profile" style="display: block">
+      <div class="card-topper"></div>
+      {% if photo is not none %}
+        <img
+          class="profile-image"
+          src="data:image/jpeg;base64, {{ photo.decode() }}"
+          alt="my_img"
+        />
+    {% endif %}
+      <br />
+      <br />
+      <h1 class="move-down">{{profile['name']}}</h1>
+      <h3>
+        <u><a href="mailto:{{profile['email']}}">{{profile['email']}}</a></u>
+      </h3>
+        {% if profile['student_resume'] is not none %}
+          <h5>
+            <a
+              href="{{ url_for('view_resume', student_id=profile['student_id']) }}"
+              target="_blank"
+              >View resume</a
+            >
+          </h5>
+        {% endif %}
+        <h5>{{profile['year']}} &bull; {{profile['department'].title}}</h5>
+      <p>{{profile['bio']}}</p>
+      <br /><br />
+      <h3>Skills</h3>
+      <br />
+        <div class="skills-container">
+          {% for skill in profile['skills'] %}
+          <div>{{skill}}</div>
+          {% endfor %}
+        </div>
+      {% if profile['username'] == username %}
+      <form action="{{url_for('profile_edit')}}">
+        <button id="editprofile-btn" class="button-dark profile-view-button">
+          edit
+        </button>
+      </form>
+      {% endif %}
+    </div>
+    <br />
+  </body>
+</html>

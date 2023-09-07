@@ -1,0 +1,22 @@
+{% for job in jobs %}
+<div
+  class="search-result {{'grid-left' if loop.index % 2 == 1 else 'grid-right'}}"
+>
+  <a href="/job-view/{{job.job_id}}" type="button">
+    <span class="title">{{job.title}}</span>
+    {% if job.class_year.__contains__(',') %}
+    <span>Multiple</span>
+    {% else %} 
+    <span>{{job.class_year}}</span>
+    {% endif %}
+    <div class="align-right no-margin text-primary-600">{{job.professor.name}}</div>
+    <div>{{job.description}}</div>
+  </a>
+  {% if job.job_id in applied_ids %}
+    <svg class="applied-check" width="36" height="36">
+      <circle cx="18" cy="18" r="17" fill="#bcffb9"></circle>
+      <path d="M 8 20 L 14 26 L 26 12" fill="none" stroke="#4ba647" stroke-width="4px" stroke-linecap="round" />
+    </svg>
+  {% endif %}
+</div>
+{% endfor %}

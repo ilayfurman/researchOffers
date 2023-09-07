@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Outfit"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='stylesheets/main.css') }}"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  </head>
+
+  <body>
+    {% include 'nav-bar-professor.html' %}
+
+    <h1>{{action}} Posting</h1>
+
+    <form
+      id="edit-posting"
+      class="edit-container even-grid"
+      action="{{ url_for('save_posting', id=job['job_id']) }}"
+      method="POST"
+      onsubmit="return validateForm()"
+    >
+      <div class="search-input grid-left">
+        <label>Position Title</label>
+        <input type="text" name="title" value="{{job['title']}}" />
+      </div>
+      <div class="search-input grid-right" style="grid-row: 1 / span 3">
+        <label>Description</label>
+        <textarea name="description">{{job['description']}}</textarea>
+      </div>
+      <div class="dropdown outfit" style="grid-column: 1 / span 1">
+        <label>Department</label><br>
+        {% for dept in departments %}
+        <div display="flex">
+          <input type=checkbox name="dept[0]" value="{{dept.title}}"
+          {% if dept.title in job['dept'] %} checked {% endif %}> {{dept.title}}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="dropdown outfit" style="grid-column: 2 / span 1">
+        <label>Class</label><br>
+        <div display="flex">
+          <input type=checkbox name="class[0]" value="All"
+            {% if job != None and job['class_year'].__contains__('All') %} checked {% endif %}> All
+        </div>
+        <div display="flex">
+          <input type=checkbox name="class[1]" value="Freshman"
+            {% if job != None and job['class_year'].__contains__('Freshman') %} checked {% endif %}> Freshman
+        </div>
+        <div display="flex">
+          <input type=checkbox name="class[2]" value="Sophomore"
+            {% if job != None and job['class_year'].__contains__('Sophomore') %} checked {% endif %}> Sophomore
+        </div>
+        <div display="flex">
+          <input type=checkbox name="class[3]" value="Junior"
+            {% if job != None and job['class_year'].__contains__('Junior') %} checked {% endif %}> Junior
+        </div>
+        <div display="flex">
+          <input type=checkbox name="class[4]" value="Senior"
+            {% if job != None and job['class_year'].__contains__('Senior') %} checked {% endif %}> Senior
+        </div>
+      </div>
+      <div class="grid-right"></div>
+      <h3 class="stay-center">Custom Questions</h3>
+      {% for question in job.questions %}
+      <div class="custom-container" style="grid-column:span 2;">
+        <input type="text" name="question" class="custom-question" value="{{question}}" />
+        <svg onclick="removeQuestion(this)" width="30px" height="30px">
+          <circle cx='15' cy='15' r='12' fill="#A00"></circle>
+          <path d="M 10 10 L 20 20 M 10 20 L 20 10" stroke="white" stroke-width="3px" stroke-linecap="round"></path>
+        </svg>
+      </div>
+        <!-- <input class="custom-question" type="text" name="question" value="{{question}}"> -->
+      {% endfor %}
+      <!-- <button id="remove-button" class="button-small button-cancel two-to-one self-end" type="button" onclick="removeQuestion()">Remove</button> -->
+      <!-- <button id="add-button" class="button-small stay-center button-dark" type="button" onclick="addQuestion()">Add</button> -->
+      <button id="add-button" class="plus-button button-dark stay-center" type="button" onclick="addQuestion()">
+        <svg>
+          <path stroke-width="4px" stroke-linecap="round" d="M 20 13 L 20 27 M 13 20 L 27 20"></path>
+        </svg>
+      </button>
+      <a href="{{url_for('professor_home', id=prof['id'])}}" class="two-to-one self-end">
+        <button type="button" class="button-cancel">Cancel</button>
+      </a>
+      <input class="button-dark three-to-two" value="Save" type="submit" />
+    </form>
+    <script src="{{ url_for('static', filename='scripts/editposting.js') }}"></script>
+
+  </body>
+
+  <script>
+    function validateForm() {
+      var title = document.forms["edit-posting"]["title"].value;
+  
+      if (title == "") {
+        alert("Title cannot be empty");
+        return false;
+      }
+    }
+    function removeQuestion(test) {
+      console.log(test);
+      test.parentNode.remove();
+    }
+  </script>
+</html>
