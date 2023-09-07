@@ -18,7 +18,7 @@ def main():
         sys.exit(1)
 
     try:
-        routes.app.run(host='0.0.0.0', port=port, debug=True)
+        routes.app.run(host='0.0.0.0', port=port, debug=False)
     except Exception as ex:
         print(ex, file=sys.stderr)
         sys.exit(1)
